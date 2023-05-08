@@ -1,44 +1,50 @@
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selectors;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-import static com.codeborne.selenide.Condition.appear;
-
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 
 
 public class CardDeliverySelenideTest {
+    @BeforeEach
+    void  shouldSetUp(){
+        Configuration.holdBrowserOpen = true;
+        Configuration.browserSize = "200x900";
+        open("http://localhost:9999/");
+
+    }
+    public String generateDate(int days) {
+        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
 
     @Test
     void shouldTestGoodPath(){
-        Configuration.holdBrowserOpen = true;
-        Configuration.browserSize = "200x900";
-
-
-        open("http://localhost:9999/");
+        String planningDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        //$("[data-test-id='date'] input").setValue("22.06.2023");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='name'] input").setValue("Иванов-Петров Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
         $("[data-test-id='agreement']").click();
         $(".button__text").click();
-        $("[data-test-id='notification']").should(appear, Duration.ofSeconds(15));
+        $( "[data-test-id='notification']" ).shouldHave(text( "Встреча успешно забронирована на " + planningDate), Duration.ofSeconds( 15 ) );
+
     }
     @Test
     void shouldTestIfCityEmpty(){
-        Configuration.holdBrowserOpen = true;
-        Configuration.browserSize = "200x900";
-
-
-        open("http://localhost:9999/");
         $("[data-test-id='city'] input").setValue(" ");
-        //$("[data-test-id='date'] input").setValue("22.06.2023");
         $("[data-test-id='name'] input").setValue("Иванов-Петров Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
         $("[data-test-id='agreement']").click();
@@ -48,13 +54,7 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfCityNotInList(){
-        Configuration.holdBrowserOpen = true;
-        Configuration.browserSize = "200x900";
-
-
-        open("http://localhost:9999/");
         $("[data-test-id='city'] input").setValue("Саров");
-        //$("[data-test-id='date'] input").setValue("22.06.2023");
         $("[data-test-id='name'] input").setValue("Иванов-Петров Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
         $("[data-test-id='agreement']").click();
@@ -64,13 +64,7 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfNameIsEmpty(){
-        Configuration.holdBrowserOpen = true;
-        Configuration.browserSize = "200x900";
-
-
-        open("http://localhost:9999/");
         $("[data-test-id='city'] input").setValue("Казань");
-        //$("[data-test-id='date'] input").setValue("22.06.2023");
         $("[data-test-id='name'] input").setValue("");
         $("[data-test-id='phone'] input").setValue("+79999999999");
         $("[data-test-id='agreement']").click();
@@ -80,13 +74,7 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfLatinName(){
-        Configuration.holdBrowserOpen = true;
-        Configuration.browserSize = "200x900";
-
-
-        open("http://localhost:9999/");
         $("[data-test-id='city'] input").setValue("Казань");
-        //$("[data-test-id='date'] input").setValue("22.06.2023");
         $("[data-test-id='name'] input").setValue("Margo");
         $("[data-test-id='phone'] input").setValue("+79999999999");
         $("[data-test-id='agreement']").click();
@@ -96,13 +84,7 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfNameWithSymbol(){
-        Configuration.holdBrowserOpen = true;
-        Configuration.browserSize = "200x900";
-
-
-        open("http://localhost:9999/");
         $("[data-test-id='city'] input").setValue("Казань");
-        //$("[data-test-id='date'] input").setValue("22.06.2023");
         $("[data-test-id='name'] input").setValue("Марго123");
         $("[data-test-id='phone'] input").setValue("+79999999999");
         $("[data-test-id='agreement']").click();
@@ -112,13 +94,7 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfShortPhone(){
-        Configuration.holdBrowserOpen = true;
-        Configuration.browserSize = "200x900";
-
-
-        open("http://localhost:9999/");
         $("[data-test-id='city'] input").setValue("Казань");
-        //$("[data-test-id='date'] input").setValue("22.06.2023");
         $("[data-test-id='name'] input").setValue("Марго");
         $("[data-test-id='phone'] input").setValue("+799");
         $("[data-test-id='agreement']").click();
@@ -128,13 +104,7 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfLongPhone(){
-        Configuration.holdBrowserOpen = true;
-        Configuration.browserSize = "200x900";
-
-
-        open("http://localhost:9999/");
         $("[data-test-id='city'] input").setValue("Казань");
-        //$("[data-test-id='date'] input").setValue("22.06.2023");
         $("[data-test-id='name'] input").setValue("Марго");
         $("[data-test-id='phone'] input").setValue("+79989797979897");
         $("[data-test-id='agreement']").click();
@@ -144,13 +114,7 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfPhoneWithoutPlus(){
-        Configuration.holdBrowserOpen = true;
-        Configuration.browserSize = "200x900";
-
-
-        open("http://localhost:9999/");
         $("[data-test-id='city'] input").setValue("Казань");
-        //$("[data-test-id='date'] input").setValue("22.06.2023");
         $("[data-test-id='name'] input").setValue("Марго");
         $("[data-test-id='phone'] input").setValue("7999876543");
         $("[data-test-id='agreement']").click();
@@ -160,16 +124,9 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfAgreementNotCheck(){
-        Configuration.holdBrowserOpen = true;
-        Configuration.browserSize = "200x900";
-
-
-        open("http://localhost:9999/");
         $("[data-test-id='city'] input").setValue("Казань");
-        //$("[data-test-id='date'] input").setValue("22.06.2023");
         $("[data-test-id='name'] input").setValue("Марго");
         $("[data-test-id='phone'] input").setValue("+70987654321");
-        //$("[data-test-id='agreement']").click();
         $(".button__text").click();
         $x("//label[@data-test-id='agreement'][contains(@class, 'input_invalid')]").shouldHave(visible);
 
