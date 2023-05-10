@@ -21,7 +21,6 @@ public class CardDeliverySelenideTest {
     @BeforeEach
     void  shouldSetUp(){
         Configuration.holdBrowserOpen = true;
-        Configuration.browserSize = "200x900";
         open("http://localhost:9999/");
 
     }
@@ -44,7 +43,10 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfCityEmpty(){
+        String planningDate = generateDate(4);
         $("[data-test-id='city'] input").setValue(" ");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='name'] input").setValue("Иванов-Петров Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
         $("[data-test-id='agreement']").click();
@@ -54,7 +56,10 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfCityNotInList(){
+        String planningDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Саров");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='name'] input").setValue("Иванов-Петров Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
         $("[data-test-id='agreement']").click();
@@ -62,9 +67,13 @@ public class CardDeliverySelenideTest {
         $x("//span[@data-test-id='city']//span[@class='input__sub'][contains(text(), 'Доставка в выбранный город недоступна')]").should(appear);
 
     }
+
     @Test
     void shouldTestIfNameIsEmpty(){
+        String planningDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='name'] input").setValue("");
         $("[data-test-id='phone'] input").setValue("+79999999999");
         $("[data-test-id='agreement']").click();
@@ -74,7 +83,10 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfLatinName(){
+        String planningDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='name'] input").setValue("Margo");
         $("[data-test-id='phone'] input").setValue("+79999999999");
         $("[data-test-id='agreement']").click();
@@ -84,7 +96,10 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfNameWithSymbol(){
+        String planningDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='name'] input").setValue("Марго123");
         $("[data-test-id='phone'] input").setValue("+79999999999");
         $("[data-test-id='agreement']").click();
@@ -94,7 +109,10 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfShortPhone(){
+        String planningDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='name'] input").setValue("Марго");
         $("[data-test-id='phone'] input").setValue("+799");
         $("[data-test-id='agreement']").click();
@@ -104,7 +122,10 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfLongPhone(){
+        String planningDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='name'] input").setValue("Марго");
         $("[data-test-id='phone'] input").setValue("+79989797979897");
         $("[data-test-id='agreement']").click();
@@ -114,7 +135,10 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfPhoneWithoutPlus(){
+        String planningDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='name'] input").setValue("Марго");
         $("[data-test-id='phone'] input").setValue("7999876543");
         $("[data-test-id='agreement']").click();
@@ -124,7 +148,10 @@ public class CardDeliverySelenideTest {
     }
     @Test
     void shouldTestIfAgreementNotCheck(){
+        String planningDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(planningDate);
         $("[data-test-id='name'] input").setValue("Марго");
         $("[data-test-id='phone'] input").setValue("+70987654321");
         $(".button__text").click();
