@@ -108,6 +108,29 @@ public class CardDeliverySelenideTest {
 
     }
     @Test
+    void shouldTestIfNoDate(){
+        $("[data-test-id='city'] input").setValue("Казань");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='name'] input").setValue("Марго123");
+        $("[data-test-id='phone'] input").setValue("+79999999999");
+        $("[data-test-id='agreement']").click();
+        $(".button__text").click();
+        $x("//span[@data-test-id='date']//span[@class='input__sub'][contains(text(), 'Неверно введена дата')]").should(appear);
+
+    }
+    @Test
+    void shouldTestIfDateIsNotPassed() {
+        String planningDate = generateDate(1);
+        $("[data-test-id='city'] input").setValue("Казань");
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(planningDate);
+        $("[data-test-id='name'] input").setValue("Марго123");
+        $("[data-test-id='phone'] input").setValue("+79999999999");
+        $("[data-test-id='agreement']").click();
+        $(".button__text").click();
+        $x("//span[@data-test-id='date']//span[@class='input__sub'][contains(text(), 'Заказ на выбранную дату невозможен')]").should(appear);
+    }
+        @Test
     void shouldTestIfShortPhone(){
         String planningDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
